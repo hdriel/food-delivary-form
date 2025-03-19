@@ -1,0 +1,17 @@
+import React from "react";
+import "./App.css";
+import FoodDeliveryForm from "./FoodDeliveryForm.tsx";
+
+function App() {
+  return (
+    <>
+      <div className="container">
+        <div className="mx-5">
+          <FoodDeliveryForm />
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default App;
