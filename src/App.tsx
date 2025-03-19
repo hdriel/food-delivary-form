@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import FoodDeliveryForm from "./FoodDeliveryForm.tsx";
+import FoodDeliveryForm from "./FoodDeliveryForm";
 
 function App() {
   return (
