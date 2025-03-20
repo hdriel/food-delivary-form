@@ -12,7 +12,14 @@ type FoodDeliveryFormType = {
 const RenderCount = getRenderCount();
 
 const FoodDeliveryForm = () => {
-  const { register, handleSubmit } = useForm<FoodDeliveryFormType>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FoodDeliveryFormType>({
+    mode: "onSubmit",
+    // reValidateMode: "onSubmit",
+    // criteriaMode: "all",
     defaultValues: {
       orderNo: new Date().valueOf(),
       customerName: "",
@@ -66,6 +73,18 @@ const FoodDeliveryForm = () => {
               })}
             />
             <label>Mobile</label>
+            {errors?.mobile && (
+              <div className="error-feedback">
+                <p>{errors?.mobile?.message}</p>
+
+                {/*{errors?.mobile?.types?.required && (*/}
+                {/*  <p>This Field is required</p>*/}
+                {/*)}*/}
+                {/*{errors?.mobile?.types?.minLength && (*/}
+                {/*  <p>Must be 10 digits</p>*/}
+                {/*)}*/}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -81,9 +100,24 @@ const FoodDeliveryForm = () => {
                   value: true,
                   message: "This Field is required",
                 },
+                validate: {
+                  noFake: (value) => {
+                    return (
+                      value !== "email@gmail.com" || "Particular email is block"
+                    );
+                    // if (value === "email@gmail.com")
+                    //   return "Particular email is block";
+                    // return true;
+                  },
+                },
               })}
             />
             <label>Customer Name</label>
+            {errors?.customerName && (
+              <div className="error-feedback">
+                <p>{errors?.customerName?.message}</p>
+              </div>
+            )}
           </div>
         </div>
         <div className="col">
@@ -100,6 +134,11 @@ const FoodDeliveryForm = () => {
               })}
             />
             <label>Email</label>
+            {errors?.email && (
+              <div className="error-feedback">
+                <p>{errors?.email?.message}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
