@@ -1,6 +1,7 @@
 import React from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { getRenderCount } from "./utils/getRenderCount.tsx";
+import { TextField } from "./controls/TextField.tsx";
 
 type FoodDeliveryFormType = {
   orderNo: number;
@@ -46,100 +47,72 @@ const FoodDeliveryForm = () => {
       FoodDeliveryForm
       <div className="row mb-2">
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="#Order No."
-              disabled
-              {...register("orderNo")}
-            />
-            <label>#Order No.</label>
-          </div>
+          <TextField
+            label="#Order No."
+            error={errors?.orderNo}
+            disabled
+            {...register("orderNo", {
+              required: "This Field is required",
+            })}
+          />
         </div>
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Mobile"
-              {...register("mobile", {
-                minLength: {
-                  value: 10,
-                  message: "Must be 10 digits",
-                },
-                maxLength: 10,
-                required: "This Field is required",
-              })}
-            />
-            <label>Mobile</label>
-            {errors?.mobile && (
-              <div className="error-feedback">
-                <p>{errors?.mobile?.message}</p>
-
-                {/*{errors?.mobile?.types?.required && (*/}
-                {/*  <p>This Field is required</p>*/}
-                {/*)}*/}
-                {/*{errors?.mobile?.types?.minLength && (*/}
-                {/*  <p>Must be 10 digits</p>*/}
-                {/*)}*/}
-              </div>
-            )}
-          </div>
+          <TextField
+            label="Mobile"
+            error={errors?.mobile}
+            {...register("mobile", {
+              minLength: {
+                value: 10,
+                message: "Must be 10 digits",
+              },
+              maxLength: 10,
+              required: "This Field is required",
+            })}
+          />
         </div>
       </div>
       <div className="row mb-2">
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Customer Name"
-              {...register("customerName", {
-                required: {
-                  value: true,
-                  message: "This Field is required",
-                },
-                validate: {
-                  noFake: (value) => {
-                    return (
-                      value !== "email@gmail.com" || "Particular email is block"
-                    );
-                    // if (value === "email@gmail.com")
-                    //   return "Particular email is block";
-                    // return true;
-                  },
-                },
-              })}
-            />
-            <label>Customer Name</label>
-            {errors?.customerName && (
-              <div className="error-feedback">
-                <p>{errors?.customerName?.message}</p>
-              </div>
-            )}
-          </div>
+          <TextField
+            label="Customer Name"
+            error={errors?.customerName}
+            {...register("customerName", {
+              required: {
+                value: true,
+                message: "This Field is required",
+              },
+            })}
+          />
         </div>
         <div className="col">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Email"
-              {...register("email", {
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]*\.[^\s@]*$/,
-                  message: "Incorrect email format",
+          <TextField
+            type="email"
+            label="Email"
+            error={errors?.email}
+            {...register("email", {
+              pattern: {
+                value: /^[^\s@]+@[^\s@]*\.[^\s@]*$/,
+                message: "Incorrect email format",
+              },
+              validate: {
+                noFake: (value) => {
+                  return (
+                    value !== "email@gmail.com" || "Particular email is block"
+                  );
+                  // if (value === "email@gmail.com")
+                  //   return "Particular email is block";
+                  // return true;
                 },
-              })}
-            />
-            <label>Email</label>
-            {errors?.email && (
-              <div className="error-feedback">
-                <p>{errors?.email?.message}</p>
-              </div>
-            )}
-          </div>
+                notFromBlackListDomain: (value, formValues) => {
+                  return (
+                    (!value.endsWith("@xyz.com") &&
+                      !value.endsWith("@example.com")) ||
+                    "this domain not supported!"
+                  );
+                },
+              },
+            })}
+          />
         </div>
       </div>
       <button type="submit" className="btn btn-primary">
