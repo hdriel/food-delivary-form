@@ -2,15 +2,34 @@ import React from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { getRenderCount } from "./utils/getRenderCount.tsx";
 import { TextField } from "./controls/TextField.tsx";
+import { Select } from "./controls/Select.tsx";
+import { SelectOptionType } from "./types";
 
 type FoodDeliveryFormType = {
   orderNo: number;
   customerName: string;
   mobile: string;
   email: string;
+  paymentMethod: string;
+  deliveryIn: number;
 };
 
 const RenderCount = getRenderCount();
+
+// const paymentOptions: SelectOptionType[] = ['Select', 'Online', 'COD'];
+const paymentOptions: SelectOptionType[] = [
+  { value: "", text: "Select" },
+  { value: "online", text: "Paid online" },
+  { value: "COD", text: "Cash on Delivery" },
+];
+
+const deliveryInOptions: SelectOptionType[] = [
+  { value: 0, text: "Select" },
+  { value: 30, text: "Half an Hour" },
+  { value: 60, text: "1 Hour" },
+  { value: 120, text: "2 Hour" },
+  { value: 180, text: "3 Hour" },
+];
 
 const FoodDeliveryForm = () => {
   const {
@@ -26,6 +45,8 @@ const FoodDeliveryForm = () => {
       customerName: "",
       mobile: "",
       email: "",
+      paymentMethod: "",
+      deliveryIn: 0,
     },
   });
 
@@ -115,6 +136,28 @@ const FoodDeliveryForm = () => {
           />
         </div>
       </div>
+      <div>list of ordered food items</div>
+      <div className="row mb-2">
+        <div className="col">
+          <Select
+            label="Payment Method"
+            options={paymentOptions}
+            {...register("paymentMethod", {
+              required: "This field is required.",
+            })}
+            error={errors.paymentMethod}
+          />
+        </div>
+        <div className="col">
+          <Select
+            label="Delivery Within"
+            options={deliveryInOptions}
+            {...register("deliveryIn")}
+            error={errors.deliveryIn}
+          />
+        </div>
+      </div>
+      <div>delivery address</div>
       <button type="submit" className="btn btn-primary">
         Submit
       </button>

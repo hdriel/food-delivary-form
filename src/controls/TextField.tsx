@@ -9,7 +9,7 @@ type TextFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 export const TextField = forwardRef(
   (props: TextFieldProps, ref: ForwardedRef<HTMLInputElement>) => {
-    const { type = "text", className, label, error, ...other } = props;
+    const { type = "text", className = "", label, error, ...other } = props;
 
     return (
       <div className="form-floating">
